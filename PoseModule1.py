@@ -3,10 +3,11 @@ import time
 import mediapipe as mp
 import math
 
+
 class poseDetector():
-    def __init__(self, mode= False, upBody=False, smooth=True,
+    def __init__(self, mode=False, upBody=False, smooth=True,
                     detectioncon = 0.5, trackicon = 0.5):
-        self.mode=mode
+        self.mode = mode
         self.upBody = upBody
         self.smooth = smooth
         self.detectioncon = detectioncon
@@ -16,13 +17,13 @@ class poseDetector():
         self.mpPose = mp.solutions.pose
         self.pose = self.mpPose.Pose(self.mode, 1, True, self.upBody, self.smooth, self.detectioncon, self.trackicon)
 
-    def findPose(self, img, draw =True):
+    def findPose(self, img, draw = True):
         imgRGB= cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-        self.results= self.pose.process(imgRGB)
+        self.results = self.pose.process(imgRGB)
         if self.results.pose_landmarks:
             if draw:
                 self.mpDraw.draw_landmarks(img,self.results.pose_landmarks, self.mpPose.POSE_CONNECTIONS)
-        return  img
+        return img
 
 
     def findPosition(self, img, draw =True):
@@ -42,9 +43,10 @@ class poseDetector():
         x1, y1 = self.lmList[p1][1:]
         x2, y2 = self.lmList[p2][1:]
         x3, y3 = self.lmList[p3][1:]
+        #tinhs toan goc
 
         angle = math.degrees(math.atan2(y3-y2,x3-x2)-math.atan2(y1-y2,x1-x2))
-
+        #print(angle)
         if angle < 0:
             angle +=360
 
@@ -58,9 +60,8 @@ class poseDetector():
             cv2.line(img, (x2, y2), (x3, y3), (255, 255, 255), 5)
             cv2.circle(img, (x3, y3), 10, (255, 0, 0), cv2.FILLED)
             cv2.circle(img, (x3, y3), 15, (255, 0, 0), 2)
-            cv2.putText(img,str(int(angle))+"do",(x2-100,y2), cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,255),3)
+            cv2.putText(img,str(int(angle)), (x2-100,y2), cv2.FONT_HERSHEY_SIMPLEX,1, (255,0,255),3)
         return angle
-    
     def findStomach(self, img, p1, p2, p3, draw=True):
         #xac dinh cac toa do
         x1, y1 = self.lmList[p1][1:]
@@ -74,6 +75,7 @@ class poseDetector():
                         math.sqrt(u[0] * u[0] + u[1] * u[1]) * math.sqrt(v[0] * v[0] + v[1] * v[1]))
         angle = math.degrees(math.acos(cosin))
 
+        #ve goc
         if draw:
             cv2.circle(img, (x1, y1), 10 ,(255,0,0), cv2.FILLED)
             cv2.circle(img, (x1, y1), 15, (255, 0, 0), 2)
@@ -85,6 +87,7 @@ class poseDetector():
             cv2.circle(img, (x3, y3), 15, (255, 0, 0), 2)
             cv2.putText(img,str(int(angle)),(x2,y2-50), cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,255),3)
         return angle
+    
     def lenght(self, img, p1, p2):
         #xac dinh cac toa do
         x1, y1 = self.lmList[p1][1:] #khuyu tay
@@ -93,9 +96,8 @@ class poseDetector():
         dodai = int(math.sqrt(u[0] * u[0] + u[1] * u[1]))
         return dodai
 
-
     #tinh goc lech trong dembbell_shoulder
-    def cosin2goc (self, img, p1, p2, p3, draw=True):
+    def cosin2angle (self, img, p1, p2, p3, draw=True):
         #xac dinh cac toa do
         x1, y1 = p1                 # toa do co tay chuan
         x2, y2 = self.lmList[p2][1:]#toa do khuy tay
@@ -107,6 +109,7 @@ class poseDetector():
         cosin = ((u[0] * v[0]) + (u[1] * v[1])) / (
                         math.sqrt(u[0] * u[0] + u[1] * u[1]) * math.sqrt(v[0] * v[0] + v[1] * v[1]))
         angle = math.degrees(math.acos(cosin))
+
         if draw:
             if angle>15:
                 cv2.circle(img, (x1, y1), 10 ,(0, 255, 0), cv2.FILLED)
@@ -117,8 +120,6 @@ class poseDetector():
                 cv2.line(img, (x2, y2), (x3, y3), (0, 0, 255), 5)
                 cv2.circle(img, (x3, y3), 10, (0, 0, 255), cv2.FILLED)
                 cv2.circle(img, (x3, y3), 15, (0, 0, 255), 2)
-            
-
         return  angle
 
 def main():
@@ -139,7 +140,7 @@ def main():
         cv2.putText(img, str(int(fps)), (50, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3)
         cv2.imshow("Hien thi", img)
         cv2.waitKey(10)
-        if cv2.waitKey(1) & 0xff == ord('q'):
+        if cv2.waitKey(1) & 0xff == ord('e'):
             break
 
     cap.release()
