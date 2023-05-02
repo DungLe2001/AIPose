@@ -19,15 +19,16 @@ while True:
     lmList = detector.findPosition(img, False)
     # print(lmList)
     if len(lmList) != 0:
+
         # Right Arm
         #angle = detector.findAngle(img, 12, 14, 16)
         #per = np.interp(angle, (50, 150), (0, 100))
         #bar = np.interp(angle, (50, 150), (650, 100))
+        
         # # Left Arm
         angle = detector.findAngle(img, 11, 13, 15)
         per = np.interp(angle, (200, 300), (0, 100))
         bar = np.interp(angle, (200, 300), (650, 100))
-        # print(angle, per)
  
         # Check for the dumbbell curls
         color = (255, 0, 255)
@@ -63,6 +64,7 @@ while True:
     cv2.imshow("Image", img)
     if cv2.waitKey(1) == ord("e"):
         break
+
 cap.release()
 cv2.destroyAllWindows()
     

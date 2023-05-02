@@ -3,7 +3,6 @@ import time
 import mediapipe as mp
 import math
 
-
 class poseDetector():
     def __init__(self, mode= False, upBody=False, smooth=True,
                     detectioncon = 0.5, trackicon = 0.5):
@@ -43,20 +42,11 @@ class poseDetector():
         x1, y1 = self.lmList[p1][1:]
         x2, y2 = self.lmList[p2][1:]
         x3, y3 = self.lmList[p3][1:]
-        #tinhs toan goc
-
-        # u = [x1 - x2, y1 - y2]
-        # v = [x3 - x2, y3 - y2]
-        # cosin = ((u[0] * v[0]) + (u[1] * v[1])) / (
-        #                 math.sqrt(u[0] * u[0] + u[1] * u[1]) * math.sqrt(v[0] * v[0] + v[1] * v[1]))
-        # angle = math.degrees(math.acos(cosin))
-
 
         angle = math.degrees(math.atan2(y3-y2,x3-x2)-math.atan2(y1-y2,x1-x2))
-        #print(angle)
+
         if angle < 0:
             angle +=360
-
 
         #ve canh tay
         if draw:
@@ -70,6 +60,7 @@ class poseDetector():
             cv2.circle(img, (x3, y3), 15, (255, 0, 0), 2)
             cv2.putText(img,str(int(angle))+"do",(x2-100,y2), cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,255),3)
         return angle
+    
     def findStomach(self, img, p1, p2, p3, draw=True):
         #xac dinh cac toa do
         x1, y1 = self.lmList[p1][1:]
@@ -83,13 +74,6 @@ class poseDetector():
                         math.sqrt(u[0] * u[0] + u[1] * u[1]) * math.sqrt(v[0] * v[0] + v[1] * v[1]))
         angle = math.degrees(math.acos(cosin))
 
-
-        #angle = math.degrees(math.atan2(y3-y2,x3-x2)-math.atan2(y1-y2,x1-x2))
-        #print(angle)
-        # if angle < 0:
-        #     angle +=360
-
-        #ve goc
         if draw:
             cv2.circle(img, (x1, y1), 10 ,(255,0,0), cv2.FILLED)
             cv2.circle(img, (x1, y1), 15, (255, 0, 0), 2)
@@ -99,7 +83,7 @@ class poseDetector():
             cv2.line(img, (x2, y2), (x3, y3), (255, 255, 255), 5)
             cv2.circle(img, (x3, y3), 10, (255, 0, 0), cv2.FILLED)
             cv2.circle(img, (x3, y3), 15, (255, 0, 0), 2)
-            cv2.putText(img,str(int(angle))+"do",(x2,y2-50), cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,255),3)
+            cv2.putText(img,str(int(angle)),(x2,y2-50), cv2.FONT_HERSHEY_SIMPLEX,2,(255,0,255),3)
         return angle
     def lenght(self, img, p1, p2):
         #xac dinh cac toa do
@@ -137,8 +121,6 @@ class poseDetector():
 
         return  angle
 
-
-
 def main():
     cap = cv2.VideoCapture("PoseVideos/1.mp4")
     detector = poseDetector()
@@ -162,7 +144,6 @@ def main():
 
     cap.release()
     cv2.destroyAllWindows()
-
 
 if __name__=="__main__":
     main()

@@ -50,7 +50,7 @@ while True:
     fps = 1 / (nTime-bTime)
     bTime = nTime
     cv2.putText(image,f"FPS: {int(fps)}",(50,70), cv2.FONT_HERSHEY_SIMPLEX,3,(255,0,0),3)
-    cv2.imshow("hienthi", image)
+    cv2.imshow("Image", image)
     if cv2.waitKey(5) & 0xff == ord("e"):
         break
 cap.release()
