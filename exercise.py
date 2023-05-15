@@ -34,14 +34,26 @@ def bicep_curls():
                     count += 0.5
                     dir = 0
             print(count)
-    
-            cv2.rectangle(img, (1100, 100), (1175, 650), color, 3)
-            cv2.rectangle(img, (1100, int(bar)), (1175, 650), color, cv2.FILLED)
-            cv2.putText(img, f'{int(per)} %', (1100, 75), cv2.FONT_HERSHEY_PLAIN, 4, color, 4)
-    
-            cv2.rectangle(img, (0, 450), (250, 720), (0, 255, 0), cv2.FILLED)
-            cv2.putText(img, str(int(count)), (45, 670), cv2.FONT_HERSHEY_PLAIN, 15, (255, 0, 0), 25)
-    
+
+            # Set the position of the count text
+            count_text_x = 45
+            count_text_y = 670
+
+            # Define the count text font properties
+            count_font = cv2.FONT_HERSHEY_SIMPLEX
+            count_font_scale = 5
+            count_thickness = 10
+
+            # Determine the size of the count text
+            (count_text_width, count_text_height), _ = cv2.getTextSize(str(int(count)), count_font, count_font_scale, count_thickness)
+
+            # Calculate the position to center the count text
+            count_text_x -= count_text_width // 2
+            count_text_y += count_text_height // 2
+
+            # Draw the count text
+            cv2.putText(img, str(int(count)), (count_text_x, count_text_y), count_font, count_font_scale, (255, 0, 0), count_thickness)
+
         cTime = time.time()
         fps = 1 / (cTime - pTime)
         pTime = cTime
@@ -96,8 +108,24 @@ def shoulder_raise():
                     rep_up = 0
 
             print(count)
-            cv2.rectangle(image, (0, 450), (250, 720), (0, 255, 0), cv2.FILLED)
-            cv2.putText(image, str(int(count)), (40, 670), cv2.FONT_HERSHEY_PLAIN, 10, (255, 0, 0), 13)
+            # Set the position of the count text
+            count_text_x = 45
+            count_text_y = 670
+
+            # Define the count text font properties
+            count_font = cv2.FONT_HERSHEY_SIMPLEX
+            count_font_scale = 5
+            count_thickness = 10
+
+            # Determine the size of the count text
+            (count_text_width, count_text_height), _ = cv2.getTextSize(str(int(count)), count_font, count_font_scale, count_thickness)
+
+            # Calculate the position to center the count text
+            count_text_x -= count_text_width // 2
+            count_text_y += count_text_height // 2
+
+            # Draw the count text
+            cv2.putText(image, str(int(count)), (count_text_x, count_text_y), count_font, count_font_scale, (255, 0, 0), count_thickness)
 
         nTime = time.time()
         fps = 1 / (nTime - bTime)
@@ -113,21 +141,30 @@ def shoulder_raise():
 
 
 def main():
+    exercise_running = False
+    choice = ""
+
     while True:
-        print("Select an exercise:")
-        print("1. Bicep Curls")
-        print("2. Shoulder Raise")
-        print("Enter 'e' to exit")
-        choice = input("Enter your choice: ")
+        if not exercise_running:
+            print("Select an exercise:")
+            print("1. Bicep Curls")
+            print("2. Shoulder Raise")
+            print("Enter 'e' to exit")
+            choice = input("Enter your choice: ")
 
         if choice == "1":
+            exercise_running = True
             bicep_curls()
+            exercise_running = False
         elif choice == "2":
+            exercise_running = True
             shoulder_raise()
+            exercise_running = False
         elif choice.lower() == "e":
             break
         else:
             print("Invalid choice. Please try again.")
+
 
 if __name__ == "__main__":
     main()
