@@ -22,6 +22,11 @@ def bicep_curls():
             per = np.interp(angle, (200, 300), (0, 100))
             bar = np.interp(angle, (200, 300), (650, 100))
             
+            # Draw percentage bar
+            cv2.rectangle(img, (1210, 100), (1250, 650), (255, 0, 0), 3)
+            cv2.rectangle(img, (1210, int(bar)), (1250, 650), (255, 0, 0), cv2.FILLED)
+            cv2.putText(img, f'{int(per)}%', (1200, 75), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+            
             color = (255, 0, 255)
             if per == 100:
                 color = (0, 255, 0)
@@ -87,9 +92,13 @@ def shoulder_raise():
             per_l = np.interp(upbody_l, (235, 270), (100, 0))
             per_r = np.interp(upbody_r, (95, 124), (0, 100))
 
-            if lmList[11][2] > lmList[14][2]:  # Check if wrist is higher than shoulder
-                wrist.append([lmList[14][1], lmList[14][2] - detector.lenght(image, 14, 16)])  # Ve co tay chuan ben phai
-                wrist.append([lmList[13][1], lmList[13][2] - detector.lenght(image, 14, 16)])  # Ve co tay chuan trai
+
+            # Check if wrist is higher than shoulder
+            if lmList[11][2] > lmList[14][2]:  
+                # Draw the right position for right arm
+                wrist.append([lmList[14][1], lmList[14][2] - detector.lenght(image, 14, 16)])
+                # Draw the right position for left arm  
+                wrist.append([lmList[13][1], lmList[13][2] - detector.lenght(image, 14, 16)])  
                 angle_r = detector.cosin2angle(image, wrist[0], 14, 16)
                 angle_l = detector.cosin2angle(image, wrist[1], 13, 15)
 
@@ -108,6 +117,7 @@ def shoulder_raise():
                     rep_up = 0
 
             print(count)
+
             # Set the position of the count text
             count_text_x = 45
             count_text_y = 670
@@ -129,7 +139,9 @@ def shoulder_raise():
 
         nTime = time.time()
         fps = 1 / (nTime - bTime)
-        bTime = nTime  # Update bTime with the current time
+    
+        # Update bTime with the current time
+        bTime = nTime  
     
         cv2.imshow("Image", image)
     
